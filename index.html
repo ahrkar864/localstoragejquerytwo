@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="script.js">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+ <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+
+
+
+<div class="toptitle">LocalStorage Arrays: Add, Remove, Update, Show...</div>
+<ul class="list">
+	<li id="list_value1">
+		<div class="text">value1</div>
+		<div onclick="lsadd('my_storage','value1');" class="add">Add</div>
+		
+	</li> 
+	<li id="list_value2">
+		<div class="text">value2</div>
+		<div onclick="lsadd('my_storage','value2');" class="add">Add</div>
+		
+	</li> 
+	<li id="list_value3">
+		<div class="text">value3</div>
+		<div onclick="lsadd('my_storage','value3');" class="add">Add</div>
+		
+	</li> 
+	<li id="list_value4">
+		<div class="text">value4</div>
+		<div onclick="lsadd('my_storage','value4');" class="add">Add</div>
+		
+	</li> 
+	<li id="list_value5">
+		<div class="text">value5</div>
+		<div onclick="lsadd('my_storage','value5');" class="add">Add</div>
+		
+	</li> 
+	
+</ul>
+
+<div class="results">
+<div class="r_title">RESULTS</div>
+<div style="display:none;" class="r_array"></div>
+<div class="r_text"></div>
+
+
+<ul class="storage_list">
+	 
+	
+</ul>
+
+ <br><br><br> <a target="_blank" title="io games" href="https://amon.games">Amon Games</a>
+</div>
+
+
+
+</div>
+<script>
+    
+function lsadd(storage_name, value, limit){	
+    var storage_list = [];
+		storage_list = JSON.parse(localStorage.getItem(storage_name)) || [];
+	var storaged 	 = JSON.parse(localStorage.getItem(storage_name));
+
+	if (localStorage.getItem(storage_name) === null) { // if storage name not saved previously, we will add now...
+			storage_list.push(value); // add in array clicked value
+			console.log(storage_list); // show list on console...
+			localStorage.setItem(storage_name, JSON.stringify(storage_list));
+			process("my_storage");
+			 
+	} else {
+		if(storaged.indexOf(value)==-1){ // if clicked value not in storage list?				
+				var count =  storaged.length;
+				if(count >= limit){
+					// if reached limit overwrite first element...
+					storaged.splice(0, 1); // remove first element, for overwrite
+					localStorage.setItem(storage_name, JSON.stringify(storaged)); // update new list without first element
+					storage_list.push(value); // and add new clicked element value...
+				} else {
+					storage_list.push(value); 
+					console.log(storage_list);
+					localStorage.setItem(storage_name, JSON.stringify(storage_list));	
+				}				
+				process("my_storage");
+				 
+		} else {
+			console.log("its already added!");
+		}
+	}
+}
+
+
+function lsdel(storage_name, value){
+	if (localStorage.getItem(storage_name) === null) { 
+		$(".r_text").html("local storage not saved yet...");
+	} else {		
+		console.log("vikvik");
+		var ls_data = JSON.parse(localStorage.getItem(storage_name));
+		var index   = ls_data.indexOf(value);
+		console.log("seçilen index:"+index);
+		if(index == -1){
+		// if not matched selected index	
+		} else {
+			// is matched, remove...
+			ls_data.splice(index, 1);
+			localStorage.setItem(storage_name, JSON.stringify(ls_data));
+			console.log(ls_data);  
+			process("my_storage");
+		}
+	}
+}
+
+
+
+function process(storage_name) {
+	$("ul.storage_list").html("");
+	if (localStorage.getItem(storage_name) === null) { 
+		console.log("local storage not saved yet...");
+		
+		$(".r_text").html("local storage not saved yet...");
+	} else {
+ 
+		var storageList = JSON.parse(window.localStorage.getItem(storage_name));
+		var count =  storageList.length;
+
+		if(count==0){
+			console.log("0 values in list..."); 
+		}
+
+			console.log(count+" values on list...");
+
+		for (var i = 0, len = storageList.length; i < len; i++) {
+		// Show storage list...
+			console.log(storageList[i]);
+			 
+			$("ul.storage_list").append('<li><div class="text">'+storageList[i]+'</div><div onclick="lsdel(\'my_storage\',\''+storageList[i]+'\');" class="remove">Remove</div></li>');
+
+		}
+	// $(".r_array").show();
+	// $(".r_array").html("<b>my_storage</b>="+JSON.stringify(storageList));
+	// $(".r_text").html("<b>"+count+ "</b> values in LocalStorage array list...");
+	}
+}
+
+// update all
+process("my_storage");
+
+</script>
+
+
